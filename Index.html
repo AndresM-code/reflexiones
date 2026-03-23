@@ -626,7 +626,7 @@
 
     <div class="essays-grid">
 
-      <div class="essay-card" onclick="openModal()">
+      <div class="essay-card" onclick="downloadEssay()">
         <div class="card-meta">
           <span class="card-tag">Filosofía moral</span>
           <span class="card-number">01</span>
@@ -634,7 +634,7 @@
         <h3 class="card-title">Obedecer no es lo mismo que ser bueno</h3>
         <p class="card-excerpt">Sobre la moral, la fe y la libertad de conciencia. Una exploración desde Asimov, Kant y la tradición judeocristiana hacia la pregunta que todos evitamos.</p>
         <div class="card-footer">
-          <span class="card-read">Leer ensayo →</span>
+          <span class="card-read">↓ Descargar PDF</span>
           <span class="card-time">~10 min</span>
         </div>
       </div>
@@ -775,24 +775,12 @@
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
 
-    function openModal() {
-      document.getElementById('modalOverlay').classList.add('open');
-      document.getElementById('modalBody').scrollTop = 0;
-      document.body.style.overflow = 'hidden';
+    function downloadEssay() {
+      const a = document.createElement('a');
+      a.href = 'autonomia_y_conciencia.pdf';
+      a.download = 'autonomia_y_conciencia.pdf';
+      a.click();
     }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    function handleOverlayClick(e) {
-      if (e.target === document.getElementById('modalOverlay')) closeModal();
-    }
-
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModal();
-    });
   </script>
 
 </body>
