@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="LAMA — Ensayos filosóficos sobre moral, fe y libertad."/>
+  <title>LAMA — Ensayos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F9F8F4;
+      --surface: #FFFFFF;
+      --border: #E5E2D8;
+      --text: #1A1916;
+      --muted: #8C8980;
+      --faint: #C8C4B8;
+      --gold: #B8924A;
+      --gold-light: #F5EFE0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(249,248,244,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--text);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(184,146,74,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s ease forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 300;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.35s ease forwards;
+    }
+
+    .hero-title em { font-style: italic; color: var(--gold); }
+
+    .hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s ease forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.8rem;
+      background: var(--text);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: background 0.2s, transform 0.2s;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.65s ease forwards;
+    }
+
+    .hero-cta:hover { background: #333; transform: translateY(-2px); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 1s ease forwards;
+    }
+
+    .scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--faint), transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── ESSAYS SECTION ── */
+    .essays-section {
+      padding: 6rem 2rem 8rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    .essay-count {
+      font-size: 0.78rem;
+      color: var(--faint);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── GRID ── */
+    .essays-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* ── CARD ── */
+    .essay-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 1.8rem 1.6rem;
+      cursor: pointer;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .essay-card:nth-child(1) { animation-delay: 0.1s; }
+    .essay-card:nth-child(2) { animation-delay: 0.22s; }
+
+    .essay-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--gold);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+
+    .essay-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      border-color: transparent;
+    }
+
+    .essay-card:hover::before { transform: scaleY(1); }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--gold-light);
+      padding: 0.25rem 0.7rem;
+      border-radius: 50px;
+    }
+
+    .card-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--border);
+      line-height: 1;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .card-excerpt {
+      font-size: 0.83rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-read {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: gap 0.2s;
+    }
+
+    .essay-card:hover .card-read { gap: 0.5rem; }
+
+    .card-time {
+      font-size: 0.72rem;
+      color: var(--faint);
+    }
+
+    .essay-card.soon {
+      opacity: 0.45;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .essay-card.soon::before { display: none; }
+
+    .soon-badge {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      background: var(--bg);
+      padding: 0.25rem 0.7rem;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      background: rgba(26,25,22,0.55);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 680px;
+      margin: auto;
+      overflow: hidden;
+      transform: translateY(30px) scale(0.98);
+      transition: transform 0.35s ease;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+    .modal-header {
+      padding: 2rem 2.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      z-index: 10;
+    }
+
+    .modal-tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.25;
+    }
+
+    .modal-close {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .modal-close:hover { background: var(--border); color: var(--text); }
+
+    .modal-body {
+      padding: 2.5rem 2.5rem 3rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.12rem;
+      line-height: 1.9;
+      color: var(--text);
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+
+    .modal-body::-webkit-scrollbar { width: 4px; }
+    .modal-body::-webkit-scrollbar-track { background: transparent; }
+    .modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+    .modal-body p { margin-bottom: 1.4rem; text-indent: 1.4em; }
+    .modal-body p:first-of-type { text-indent: 0; }
+
+    .modal-section { margin-top: 2.5rem; margin-bottom: 1.2rem; }
+
+    .modal-section-num {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .modal-blockquote {
+      margin: 1.8rem 0;
+      padding: 1rem 1.6rem;
+      border-left: 2px solid var(--gold);
+      background: var(--gold-light);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: #5A4E38;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .modal-closing {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .modal-ornament {
+      color: var(--faint);
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-question {
+      font-style: italic;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.9;
+      margin-bottom: 1.5rem;
+      text-indent: 0 !important;
+    }
+
+    .modal-final {
+      font-style: italic;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.85;
+      text-indent: 0 !important;
+    }
+
+    /* ── ABOUT ── */
+    .about-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .about-inner { max-width: 520px; margin: 0 auto; }
+
+    .about-inner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-inner p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.8rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.73rem;
+      color: var(--faint);
+      letter-spacing: 0.06em;
+    }
+
+    footer a { color: var(--faint); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.4rem; }
+      .nav-links { display: none; }
+      .essays-section { padding: 4rem 1.2rem 6rem; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .modal-body { padding: 1.8rem 1.5rem 2.5rem; max-height: 65vh; }
+      .modal-header { padding: 1.5rem 1.5rem 1.2rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a href="#" class="nav-logo">L<span>A</span>MA</a>
+    <ul class="nav-links">
+      <li><a href="#ensayos">Ensayos</a></li>
+      <li><a href="#sobre">Sobre el autor</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-tag">Filosofía · Reflexión · Escritura</div>
+    <h1 class="hero-title">Pensar<br/>en <em>voz alta</em></h1>
+    <p class="hero-desc">Ensayos sobre moral, fe, libertad y la condición humana. Escritos para quien quiera detenerse a reflexionar.</p>
+    <a href="#ensayos" class="hero-cta">
+      Ver ensayos
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
+    <div class="scroll-hint">
+      <span>Explorar</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ESSAYS -->
+  <section class="essays-section" id="ensayos">
+    <div class="section-header reveal">
+      <div>
+        <span class="section-tag">Colección</span>
+        <h2 class="section-title">Ensayos</h2>
+      </div>
+      <span class="essay-count">1 publicado</span>
+    </div>
+
+    <div class="essays-grid">
+
+      <div class="essay-card" onclick="openModal()">
+        <div class="card-meta">
+          <span class="card-tag">Filosofía moral</span>
+          <span class="card-number">01</span>
+        </div>
+        <h3 class="card-title">Obedecer no es lo mismo que ser bueno</h3>
+        <p class="card-excerpt">Sobre la moral, la fe y la libertad de conciencia. Una exploración desde Asimov, Kant y la tradición judeocristiana hacia la pregunta que todos evitamos.</p>
+        <div class="card-footer">
+          <span class="card-read">Leer ensayo →</span>
+          <span class="card-time">~10 min</span>
+        </div>
+      </div>
+
+      <div class="essay-card soon">
+        <div class="card-meta">
+          <span class="soon-badge">Próximamente</span>
+          <span class="card-number">02</span>
+        </div>
+        <h3 class="card-title" style="color:var(--faint);">Próximo ensayo</h3>
+        <p class="card-excerpt">Nuevo texto en preparación.</p>
+        <div class="card-footer">
+          <span class="card-read" style="color:var(--faint);">En preparación</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="sobre">
+    <div class="about-inner reveal">
+      <span class="section-tag">Sobre el autor</span>
+      <h2>LAMA</h2>
+      <p>Estas reflexiones nacieron de la curiosidad de preguntarse por qué hacemos el bien y de dónde viene realmente nuestra moral. No de un libro de texto ni de una cátedra, sino del deseo genuino de entender y de compartir lo que el pensamiento va descubriendo.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2025 LAMA</span>
+    <span>Ensayos filosóficos</span>
+    <a href="#inicio">↑ Volver arriba</a>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <span class="modal-tag">Filosofía moral · ~10 min de lectura</span>
+          <h2 class="modal-title">Obedecer no es lo mismo<br/>que ser bueno</h2>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+
+        <p>Hay dos preguntas que parecen no tener nada que ver entre sí, pero que, si uno las sostiene al mismo tiempo, revelan que señalan exactamente al mismo lugar.</p>
+        <p>La primera: ¿necesitamos a Dios para ser buenos? La segunda: ¿somos realmente libres si obedecer los mandamientos viene condicionado por el miedo al castigo o la esperanza del premio?</p>
+        <p>Formuladas así, una viene de afuera de la religión —de Asimov, de Dostoievski, de la tradición filosófica secular— y la otra viene de adentro, de alguien que toma en serio la fe y se pregunta si la moral que propone es realmente libre. Pero ambas desembocan en el mismo río: la diferencia entre actuar por convicción y actuar por miedo. Entre ser bueno y simplemente obedecer.</p>
+        <p>Kant llamó a esa diferencia con dos palabras: autonomía y heteronomía. Y es esa distinción la que conecta, en el fondo, todo lo que sigue.</p>
+
+        <div class="modal-section">
+          <span class="modal-section-num">I</span>
+          <h3 class="modal-section-title">El problema con Dios como fundamento moral</h3>
+        </div>
+        <p>Cuando Dostoievski escribió, a través de uno de sus personajes, que si Dios no existe todo está permitido, planteó una de las ideas más influyentes —y más discutibles— de la filosofía moderna.</p>
+        <p>Pero Platón había anticipado el problema 2.400 años antes con el dilema de Eutifrón: ¿algo es bueno porque Dios lo ordena, o Dios lo ordena porque ya es bueno? Si lo primero, la moral es arbitraria. Si lo segundo, el bien existe con independencia de Dios, y Dios no es el fundamento de la moral, sino alguien que también la reconoce.</p>
+        <p>Asimov está parado sobre ese segundo suelo: el bien es reconocible por nosotros mismos, sin necesidad de un árbitro externo. No porque seamos perfectos, sino porque tenemos la capacidad —incómoda, imperfecta, pero real— de reconocerlo.</p>
+
+        <div class="modal-section">
+          <span class="modal-section-num">II</span>
+          <h3 class="modal-section-title">¿De dónde viene entonces la moral?</h3>
+        </div>
+        <p>Hobbes creía que sin gobierno ni leyes el ser humano se destruye a sí mismo. La sociedad nos salva de nuestra propia brutalidad. Rousseau pensaba lo contrario: es la civilización la que pervierte al hombre, especialmente desde el momento en que alguien cercó un terreno y dijo <em>esto es mío</em>.</p>
+        <p>Pero Rousseau tiene un problema que nunca resolvió: si el hombre es bueno por naturaleza y la sociedad la hacen los hombres, ¿quién produjo la primera cerca?</p>
+        <p>El primatólogo Frans de Waal ha documentado en chimpancés comportamientos reconocibles como morales: consuelan al que sufre, castigan la injusticia, cooperan sin beneficio inmediato. La empatía y el sentido básico de lo justo parecen ser más antiguos que cualquier religión o sistema filosófico.</p>
+        <p>Pero el mismo ser humano participó en los genocidios del siglo XX. No porque los individuos fueran monstruos, sino porque los sistemas tienen mecanismos para desactivar la moral natural. Lo que emerge es incómodo pero preciso: tenemos capacidad moral natural, y también una capacidad igualmente natural para apagarla. El contexto determina cuál florece.</p>
+
+        <div class="modal-section">
+          <span class="modal-section-num">III</span>
+          <h3 class="modal-section-title">La distinción que lo une todo: Kant</h3>
+        </div>
+        <p>Aquí es donde Kant se vuelve indispensable. Su aporte fue preciso y exigente: la moral genuina solo puede venir de la razón autónoma, no de la obediencia a una autoridad.</p>
+        <div class="modal-blockquote">
+          Actúa solo según aquella máxima que puedas querer que se convierta en ley universal.
+        </div>
+        <p>Cuando alguien devuelve una billetera perdida sin quedarse con el dinero, ¿por qué lo hace? Hay tres respuestas posibles: porque teme que lo vean, porque espera reciprocidad, o porque simplemente no concibe actuar de otra manera. Solo la tercera, diría Kant, es genuinamente moral. Las dos primeras son cálculo.</p>
+        <p>Kant llamó heteronomía a actuar bien por miedo o esperanza de premio. Quien actúa así no es, en sentido estricto, moral. Es estratégico. La moralidad genuina, en cambio, surge de la conciencia libre, no de la vigilancia externa.</p>
+
+        <div class="modal-section">
+          <span class="modal-section-num">IV</span>
+          <h3 class="modal-section-title">La culpa: el miedo que se vuelve interior</h3>
+        </div>
+        <p>Hasta ahora hemos hablado del miedo como algo externo. Pero hay una forma más sutil: ya no viene de afuera, viene de adentro. Se llama culpa.</p>
+        <p>La culpa sana es una señal útil, la conciencia que reconoce que algo estuvo mal y nos invita a repararlo. Pero la culpa heterónoma es el miedo internalizado: la voz de la autoridad externa que uno ha aprendido a escuchar tan bien que ya no la distingue de la propia.</p>
+        <p>Un individuo que teme el castigo externo puede desobedecer si calcula que no lo verán. Pero un individuo que se siente culpable por <em>pensar</em> en desobedecer ya no necesita vigilancia externa. Se vigila solo.</p>
+        <p>¿De dónde viene esa sensación de que algo está mal? ¿Es tu conciencia hablando, o el eco de una autoridad que aprendiste a no contradecir? La diferencia importa, porque una te libera y la otra te ata, aunque la cadena sea invisible.</p>
+
+        <div class="modal-section">
+          <span class="modal-section-num">V</span>
+          <h3 class="modal-section-title">El problema de los mandamientos desde adentro</h3>
+        </div>
+        <p>Los mandamientos se presentan como una guía hacia el bien. Pero si desobedecer trae consecuencias —pecado, castigo, condena—, la elección no es del todo libre. Está enmarcada por la amenaza, aunque sea sagrada.</p>
+        <p>Cuando uno toca una estufa y se quema, es el cuerpo quien informa del daño. La fuente del juicio es interna. Cuando uno desobedece un mandamiento, es una autoridad externa quien define qué duele y qué no.</p>
+        <p>El mandamiento de honrar al padre y a la madre ilustra el problema. En abstracto, es sensato. Pero aplicado a alguien cuyos padres lo han maltratado, se convierte en un dilema que la norma sola no puede resolver. ¿Es eso moral, en el sentido kantiano, o es obediencia disfrazada de virtud?</p>
+        <p>Una religiosidad que aplica los mandamientos como absolutos rígidos transforma la guía en control. Una que permite el cuestionamiento y la conciencia individual se acerca a lo que las tradiciones más profundas han llamado siempre madurez espiritual.</p>
+
+        <div class="modal-section">
+          <span class="modal-section-num">VI</span>
+          <h3 class="modal-section-title">Donde los dos caminos llegan</h3>
+        </div>
+        <p>La moral no necesita a Dios para existir. Tiene raíces más antiguas: evolutivas, empáticas, racionales. Pero tampoco puede prescindir de las condiciones que la hacen florecer o la apagan.</p>
+        <p>Asimov y el creyente que se pregunta si sus mandamientos lo hacen libre o lo encadenan están, sin saberlo, en el mismo proyecto: encontrar una moral que no dependa del miedo. Una que nazca de adentro. Una que sea, en el sentido más profundo, propia.</p>
+        <p>Obedecer no es lo mismo que ser bueno. Y la distancia entre esas dos cosas es la distancia entre vivir desde el miedo y vivir desde la conciencia.</p>
+
+        <div class="modal-closing">
+          <span class="modal-ornament">✦</span>
+          <p class="modal-question">
+            Entonces, la pregunta que queda no es si necesitas a Dios,<br/>
+            ni si los mandamientos son justos o no.<br/><br/>
+            La pregunta es más íntima y más difícil:<br/><br/>
+            <strong>cuando haces el bien,<br/>
+            ¿lo haces porque algo en ti lo reconoce como verdadero,<br/>
+            o porque tienes miedo de lo que pasa si no lo haces?</strong>
+          </p>
+          <hr style="border:none; border-top:1px solid var(--border); margin: 1.8rem auto; width: 60px;"/>
+          <p class="modal-final">
+            La verdadera libertad no es hacer lo que uno quiere.<br/>
+            Es poder elegir con conciencia, y asumir lo que esa elección significa.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    function openModal() {
+      document.getElementById('modalOverlay').classList.add('open');
+      document.getElementById('modalBody').scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+
+</body>
+</html>
