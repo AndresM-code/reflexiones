@@ -761,6 +761,7 @@
     </div>
   </div>
 
+  <!-- ÚNICO BLOQUE DE SCRIPT -->
   <script>
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
@@ -776,38 +777,35 @@
     reveals.forEach(el => observer.observe(el));
 
     function downloadEssay() {
+      if (window.goatcounter) {
+        window.goatcounter.count({
+          path: 'descarga-pdf',
+          title: 'Descarga PDF — Autonomía y conciencia',
+          event: true,
+        });
+      }
       const a = document.createElement('a');
       a.href = 'autonomia_y_conciencia.pdf';
       a.download = 'autonomia_y_conciencia.pdf';
       a.click();
     }
-  </script>
-const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
-    });
- 
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
- 
-    function downloadEssay() {
-      window.goatcounter.count({
-        path: 'descarga-pdf',
-        title: 'Descarga PDF — Autonomía y conciencia',
-        event: true,
-      });
-      const a = document.createElement('a');
-      a.href = 'autonomia_y_conciencia.pdf';
-      a.download = 'autonomia_y_conciencia.pdf';
-      a.click();
+
+    function handleOverlayClick(event) {
+      if (event.target === document.getElementById('modalOverlay')) {
+        closeModal();
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
     }
   </script>
- 
+
   <script data-goatcounter="https://andresm.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
 </body>
 </html>
+      
+      
+
+          
