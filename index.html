@@ -621,12 +621,14 @@
         <span class="section-tag">Colección</span>
         <h2 class="section-title">Ensayos</h2>
       </div>
-      <span class="essay-count">1 publicado</span>
+      <!-- ── Actualizado a 2 publicados ── -->
+      <span class="essay-count">2 publicados</span>
     </div>
 
     <div class="essays-grid">
 
-      <div class="essay-card" onclick="downloadEssay()">
+      <!-- ── ENSAYO 01 ── -->
+      <div class="essay-card" onclick="downloadEssay1()">
         <div class="card-meta">
           <span class="card-tag">Filosofía moral</span>
           <span class="card-number">01</span>
@@ -639,15 +641,17 @@
         </div>
       </div>
 
-      <div class="essay-card soon">
+      <!-- ── ENSAYO 02 — ahora activo ── -->
+      <div class="essay-card" onclick="downloadEssay2()">
         <div class="card-meta">
-          <span class="soon-badge">Próximamente</span>
+          <span class="card-tag">Economía política</span>
           <span class="card-number">02</span>
         </div>
-        <h3 class="card-title" style="color:var(--faint);">Próximo ensayo</h3>
-        <p class="card-excerpt">Nuevo texto en preparación.</p>
+        <h3 class="card-title">El precio de nacer pobre</h3>
+        <p class="card-excerpt">Sobre la meritocracia, la desigualdad estructural y las matemáticas de la movilidad social. Una exploración con datos reales sobre por qué en Colombia el esfuerzo individual raramente alcanza.</p>
         <div class="card-footer">
-          <span class="card-read" style="color:var(--faint);">En preparación</span>
+          <span class="card-read">↓ Descargar PDF</span>
+          <span class="card-time">~15 min</span>
         </div>
       </div>
 
@@ -669,7 +673,7 @@
     <a href="#inicio">↑ Volver arriba</a>
   </footer>
 
-  <!-- MODAL -->
+  <!-- MODAL ensayo 01 -->
   <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
     <div class="modal">
       <div class="modal-header">
@@ -761,7 +765,6 @@
     </div>
   </div>
 
-  <!-- ÚNICO BLOQUE DE SCRIPT -->
   <script>
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
@@ -776,17 +779,35 @@
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
 
-    function downloadEssay() {
+    // ── Ensayo 01: Autonomía y conciencia ──
+    function downloadEssay1() {
       if (window.goatcounter) {
         window.goatcounter.count({
-          path: 'descarga-pdf',
-          title: 'Descarga PDF — Autonomía y conciencia',
+          path: 'descarga-pdf-01',
+          title: 'Descarga PDF — Obedecer no es lo mismo que ser bueno',
           event: true,
         });
       }
       const a = document.createElement('a');
       a.href = 'autonomia_y_conciencia.pdf';
       a.download = 'autonomia_y_conciencia.pdf';
+      a.click();
+    }
+
+    // ── Ensayo 02: El precio de nacer pobre ──
+    // Reemplaza 'el_precio_de_nacer_pobre.pdf' con el nombre
+    // exacto del archivo que subas a tu servidor.
+    function downloadEssay2() {
+      if (window.goatcounter) {
+        window.goatcounter.count({
+          path: 'descarga-pdf-02',
+          title: 'Descarga PDF — El precio de nacer pobre',
+          event: true,
+        });
+      }
+      const a = document.createElement('a');
+      a.href = 'el_precio_de_nacer_pobre_en_Colombia.pdf';
+      a.download = 'el_precio_de_nacer_pobre_en_Colombia.pdf';
       a.click();
     }
 
