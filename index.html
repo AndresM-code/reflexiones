@@ -655,6 +655,22 @@
         </div>
       </div>
 
+      <!-- ── ENSAYO 03 ── -->
+      <div class="essay-card" onclick="downloadEssay1()">
+        <div class="card-meta">
+          <span class="card-tag">Filosofía Cultura</span>
+          <span class="card-number">03</span>
+        </div>
+        <h3 class="card-title">Lo que no se puede corromper</h3>
+        <p class="card-excerpt">Sobre la conciencia autónoma, el poder y los sistemas que intentan absorberla. Una exploración desde Sócrates, Kant, Camus y la evidencia matemática hacia lo único que ningún poder puede confiscarte completamente.</p>
+        <div class="card-footer">
+          <span class="card-read">↓ Descargar PDF</span>
+          <span class="card-time">~20 min</span>
+        </div>
+      </div>
+
+
+      
     </div>
   </section>
 
@@ -810,7 +826,20 @@
       a.download = 'el_precio_de_nacer_pobre_en_Colombia.pdf';
       a.click();
     }
-
+// ── Ensayo 03: Lo que no se puede corromper ──
+    function downloadEssay1() {
+      if (window.goatcounter) {
+        window.goatcounter.count({
+          path: 'descarga-pdf-03',
+          title: 'Descarga PDF — Lo que no se puede corromper',
+          event: true,
+        });
+      }
+      const a = document.createElement('a');
+      a.href = 'Lo_que_no_se_puede_corromper..pdf';
+      a.download = 'Lo_que_no_se_puede_corromper..pdf';
+      a.click();
+    }
     function handleOverlayClick(event) {
       if (event.target === document.getElementById('modalOverlay')) {
         closeModal();
